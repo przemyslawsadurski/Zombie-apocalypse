@@ -1,0 +1,97 @@
+nav {
+    background-color: #333;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  nav ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+  }
+  
+  nav li {
+    margin: 0 10px;
+  }
+  
+  nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  nav a:hover {
+    text-decoration: underline;
+  }
+
+  body {
+    background-image: url("/static/img/zombie_background.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  footer {
+    background-color: #333;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    color: white;
+    margin: 0 10px;
+  }
+
+  footer ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+  }
+  
+  footer li {
+    margin: 0 10px;
+  }
+  
+  footer a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  footer a:hover {
+    text-decoration: underline;
+  }
+
+  content {
+    color: black;
+  }
+
+  .author {
+    font-weight: bold;
+    font-size: 18px;
+    margin: 0 10px;
+  }
+
+  .author-container {
+    list-style: none;
+    display: inline-block;
+  }
+
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 10px;
+  }
+  
+  .gallery a {
+    display: block;
+    border: 2px solid #333;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .gallery img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
