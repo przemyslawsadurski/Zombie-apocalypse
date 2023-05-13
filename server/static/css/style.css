@@ -1,29 +1,44 @@
 nav {
-    background-color: #333;
-    height: 50px;
-    display: flex;
-    justify-content: center;
+  background-color: #333;
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width:100%;
+  color: white;
+  margin: 0 0px;
+  z-index: 1;
   }
   
   nav ul {
-    list-style: none;
-    display: flex;
-    align-items: center;
+  list-style: none;
+  display: flex;
+  align-items: center;
   }
   
   nav li {
-    margin: 0 10px;
+  margin: 0 10px 0 0;
+  border-right: 1px solid white;
+  padding-right: 10px;
+  margin-left: auto;
+  }
+  
+  nav li:last-child {
+  border-right: none;
+  padding-right: 0;
   }
   
   nav a {
-    color: white;
-    text-decoration: none;
-    font-size: 18px;
-    font-weight: bold;
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: bold;
   }
   
   nav a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
   }
 
   body {
@@ -32,13 +47,18 @@ nav {
     background-size: cover;
   }
 
+
   footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width:100%;
+    height: 30px;
     background-color: #333;
-    height: 25px;
     display: flex;
     justify-content: center;
     color: white;
-    margin: 0 10px;
+    margin: 0 0px;
   }
 
   footer ul {
@@ -62,14 +82,80 @@ nav {
     text-decoration: underline;
   }
 
-  content {
+  .container {
+    height: 100vh;
+  }
+
+  .content {
+    margin-top: 100px !important;
+    width: 50%;
+    height: 90%;
     color: black;
+    background-color: #615f5f;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    border-radius: 20px;
+  }
+  
+
+  .content h1, h2 {
+    margin-left: 12px;
+  }
+
+  .notification-form {
+    color: black;
+    margin-left: 0px;
+
   }
 
   .author {
     font-weight: bold;
     font-size: 18px;
     margin: 0 10px;
+  }
+
+  #notification-content {
+    width: 135%;
+    height: 150px;
+
+  }
+
+  .main-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    margin-left: 310px;
+    margin-top: 11px;
+  }
+
+  #sign-up-button {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    width: 10%;
+    height: 4%;
+    margin-top: 2px;
+    margin-right: 150px;
+  }
+
+  #login-button {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    width: 10%;
+    height: 4%;
+    margin-top: 36px;
+    margin-right: 150px;
+  } 
+  
+  label[for="notification-content"], #notification-content {
+    margin-right: -3  50px;
   }
 
   .author-container {

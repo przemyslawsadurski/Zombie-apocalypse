@@ -8,6 +8,7 @@
         <link rel="icon" href="{{ url_for('static', filename='img/zombie_icon.png') }}" type="image/png">
     </head>
     <body>
+        <a href="/" class="main-page"><img src="{{url_for('static',filename='img/zombie-icon-transparent.png')}}"></a>
         <nav>
           <ul>
             <li><a href="register">How to Play</a></li>
@@ -18,11 +19,13 @@
             <li><a href="highestscores">Highest scores</a></li>
           </ul>
         </nav>
-        <div class="gallery">
-            <a href="#"><img src="{{ url_for('static', filename='img/test.png') }}" alt="Image 1"></a>
-            <a href="#"><img src="{{ url_for('static', filename='img/test.png') }}" alt="Image 2"></a>
-            <a href="#"><img src="{{ url_for('static', filename='img/test.png') }}" alt="Image 3"></a>
-            <a href="#"><img src="{{ url_for('static', filename='img/test.png') }}" alt="Image 4"></a>
+        <div class="container">
+            <div class="gallery">
+                <a href="#"><img src="{{ url_for('static', filename='img/test.png') }}" alt="Image 1"></a>
+                <a href="#"><img src="{{ url_for('static', filename='img/test.png') }}" alt="Image 2"></a>
+                <a href="#"><img src="{{ url_for('static', filename='img/test.png') }}" alt="Image 3"></a>
+                <a href="#"><img src="{{ url_for('static', filename='img/test.png') }}" alt="Image 4"></a>
+            </div>
         </div>
         <footer>
           <a class="author-link" href="portfolio">

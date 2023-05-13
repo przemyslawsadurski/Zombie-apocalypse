@@ -8,6 +8,7 @@
         <link rel="icon" href="{{ url_for('static', filename='img/zombie_icon.png') }}" type="image/png">
     </head>
     <body>
+        <a href="/" class="main-page"><img src="{{url_for('static',filename='img/zombie-icon-transparent.png')}}"></a>
         <nav>
           <ul>
             <li><a href="register">How to Play</a></li>
@@ -18,9 +19,30 @@
             <li><a href="highestscores">Highest scores</a></li>
           </ul>
         </nav>
-        <div class="content">
-          contact us
-        </div>
+        <div class="container">
+            <div class="content">
+                <h1>In case you have any questions, bugs, or offers, please contact us through this form.</h1>
+                <h2>You can also contact us directly by sending e-mail message to the given address: zombie-apocalyse@gmail.com</h2>
+                <form method="POST" action="send-notification" class="notification-form">
+                    <label for="username">Username:</label><br>
+                    <input type="text" id="username" name="username" required><br></br>
+
+                    <label for="notification-topic">Notification topic:</label><br>
+                    <select name="cars" id="cars" required>
+                        <option value="blank"></option>
+                        <option value="bugs">Bugs</option>
+                        <option value="features">Features</option>
+                        <option value="question">Question</option>
+                        <option value="account">Account</option>
+                    </select><br></br>
+
+                    <label for="notification-content">Notification content:</label><br>
+                    <textarea rows="15" cols="30" id="notification-content" name="notification-content" required></textarea><br></br>
+                    
+                    <input type="submit" value="Send message" id="notification-send"><br></br>
+                </form>
+            </div>
+        </div> 
         <footer>
           <a class="author-link" href="portfolio">
           <li class="author-container">Created by:</li>
