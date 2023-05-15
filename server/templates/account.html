@@ -6,12 +6,13 @@
         <title>Zombie - Apocalypse</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
         <link rel="icon" href="{{ url_for('static', filename='img/zombie_icon.png') }}" type="image/png">
+        
     </head>
     <body>
       {% if g.user %}
         <p class="logged-user">Welcome, {{ g.user }}!</p>
-        <input type="button" id="logout-button" name="logout-button" action="logout" value="Logout">
-        <input type="button" id="user-profile" name="user-profile" action="user-profile" value="Account">
+        <a href="logout"><input type="button" id="logout-button" name="logout-button" value="Logout"></a>
+        <a href="account"><input type="button" id="user-profile" name="user-profile" value="Account"></a>
       {% endif %}
       <a href="/" class="main-page"><img src="{{url_for('static',filename='img/zombie-icon-transparent.png')}}"></a>
       <nav>
@@ -27,6 +28,36 @@
       <a href="login"><input type="button" id="login-button" name="login-button" action="login" value="LOG IN"></a>
         <div class="container">
           <div class="content">
+            <span class="premium-points">Premium points: {{ premium_points }}</span>
+            <span class="coins">Coins: {{ user_coins  }}</span>
+            <span class="topscore">Best score: {{ user_topscore }}</span>
+            <div class="account-menu">
+              <table class="account-menu-table">
+                <thead>
+                  <tr>
+                    <td class="interface" onclick="showInterface('account-settings')">Account settings</td>
+                    <td class="interface" onclick="showInterface('game-settings')">Game Settings</td>
+                    <td class="interface" onclick="showInterface('premium-purchase')">Premium Purchase</td>
+                    <td class="interface" onclick="showInterface('recruit-friend')">Recruit a friend</td>
+                  </tr>
+                </thead>
+              </table>
+              <div id="account-settings-interface" class="interface">
+                
+              </div>
+              
+              <div id="game-settings-interface" class="interface">
+                
+              </div>
+              
+              <div id="premium-purchase-interface" class="interface">
+                
+              </div>
+              
+              <div id="recruit-friend-interface" class="interface">
+                
+              </div>
+            </div>
           </div>
         </div>
         <footer>
@@ -35,5 +66,6 @@
           <li class="author-container"><span class="author">Przemysław Sadurski</span></li>
           </a>
         </footer>
+        <script src="{{ url_for('static', filename='js/script.js')}}"></script>
       </body>
 </html>

@@ -8,6 +8,11 @@
         <link rel="icon" href="{{ url_for('static', filename='img/zombie_icon.png') }}" type="image/png">
     </head>
     <body>
+        {% if g.user %}
+        <p class="logged-user">Welcome, {{ g.user }}!</p>
+        <a href="logout"><input type="button" id="logout-button" name="logout-button" value="Logout"></a>
+        <a href="account"><input type="button" id="user-profile" name="user-profile" value="Account"></a>
+        {% endif %}
         <a href="/" class="main-page"><img src="{{url_for('static',filename='img/zombie-icon-transparent.png')}}"></a>
         <nav>
           <ul>
@@ -15,7 +20,6 @@
             <li><a href="gallery">Gallery</a></li>
             <li><a href="contact">Contact</a></li>
             <li><a href="about">About Us</a></li>
-            <li><a href="community">Community</a></li>
             <li><a href="highestscores">Highest scores</a></li>
           </ul>
         </nav>
@@ -23,9 +27,11 @@
         <a href="login"><input type="button" id="login-button" name="login-button" action="login" value="LOG IN"></a>
         <div>
             <div class="content">
-                Highest scores
+                <h1>Highest scores</h1>
+                <br>
+                </br>
                 <div class="table-container">
-                    <table>
+                    <table class="scores-table">
                         <thead>
                           <tr>
                             <th>Rank</th>
@@ -34,60 +40,20 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>1</td>
-                            <td>JohnDoe</td>
-                            <td>1000</td>
+                            {% for rank in range(1, 11) %}
+                            {% if rank <= scores|length %}
+                              <tr>
+                                <td>{{ rank }}</td>
+                                <td>{{ scores[rank-1][0] }}</td>
+                                <td>{{ scores[rank-1][1] }}</td>
                           </tr>
-                          <tr>
-                            <td>2</td>
-                            <td>JaneDoe</td>
-                            <td>950</td>
-                          </tr>
-                          <tr>
-                            <td>3</td>
-                            <td>BobSmith</td>
-                            <td>800</td>
-                          </tr>
-                          <tr>
-                            <td>4</td>
-                            <td>AliceGreen</td>
-                            <td>750</td>
-                          </tr>
-                          <tr>
-                            <td>5</td>
-                            <td>SamBrown</td>
-                            <td>700</td>
-                          </tr>
-                          <tr>
-                            <td>6</td>
-                            <td>SamBrown</td>
-                            <td>700</td>
-                          </tr>
-                          <tr>
-                            <td>7</td>
-                            <td>SamBrown</td>
-                            <td>700</td>
-                          </tr>
-                          <tr>
-                            <td>8</td>
-                            <td>SamBrown</td>
-                            <td>700</td>
-                          </tr>
-                          <tr>
-                            <td>9</td>
-                            <td>SamBrown</td>
-                            <td>700</td>
-                          </tr>
-                          <tr>
-                            <td>10</td>
-                            <td>SamBrown</td>
-                            <td>700</td>
-                          </tr>
+                                {% endif %}
+                            {% endfor %}
                         </tbody>
                       </table>
                       <br>
                       </br>
+                      <br>
                 </div>
             </div>
         </div>

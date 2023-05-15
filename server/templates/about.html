@@ -8,6 +8,11 @@
         <link rel="icon" href="{{ url_for('static', filename='img/zombie_icon.png') }}" type="image/png">
     </head>
     <body>
+      {% if g.user %}
+        <p class="logged-user">Welcome, {{ g.user }}!</p>
+        <a href="logout"><input type="button" id="logout-button" name="logout-button" value="Logout"></a>
+        <a href="account"><input type="button" id="user-profile" name="user-profile" value="Account"></a>
+      {% endif %}
       <a href="/" class="main-page"><img src="{{url_for('static',filename='img/zombie-icon-transparent.png')}}"></a>
         <nav>
           <ul>
@@ -15,7 +20,6 @@
             <li><a href="gallery">Gallery</a></li>
             <li><a href="contact">Contact</a></li>
             <li><a href="about">About Us</a></li>
-            <li><a href="community">Community</a></li>
             <li><a href="highestscores">Highest scores</a></li>
           </ul>
         </nav>
@@ -23,7 +27,7 @@
         <a href="login"><input type="button" id="login-button" name="login-button" action="login" value="LOG IN"></a>
         <div class="container">
           <div class="content">
-            <p>Currently the game is being developed single handedly by Przemysław Sadurski.
+            <p>Hi my name is Przemysław Sadurski and currently I am the only developer of this project.
               I've graduated Information Technology at Wydział Elektrotechniki i Informatyki of Politechnika Lubelska
               and got myself an engineer title. I have a lot of passion for programming, gaming, and technical novelties.
               This project started because of my dream to become professional programmer with a little dose of love towards
@@ -36,7 +40,7 @@
               The more you know, your skills and possibilities grow, so i'm open minded to learn new technologies.
               Below I've listed my current technological stack.
             </p>
-            <span>HTML<br>CSS<br>JS<br>Python<br>C#<br>C++<br>MySQL<br>MSSQL<br>SQLite<br></span>
+            <span>HTML<br>CSS<br>JS<br>Python<br>C#<br>C++<br>MySQL<br>MSSQL<br>SQLite<br>GIT<br></span>
           </div>
         </div>
         <footer>

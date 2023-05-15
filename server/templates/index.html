@@ -8,6 +8,11 @@
         <link rel="icon" href="{{ url_for('static', filename='img/zombie_icon.png') }}" type="image/png">
     </head>
     <body>
+      {% if g.user %}
+        <p class="logged-user">Welcome, {{ g.user }}!</p>
+        <a href="logout"><input type="button" id="logout-button" name="logout-button" value="Logout"></a>
+        <a href="account"><input type="button" id="user-profile" name="user-profile" value="Account"></a>
+      {% endif %}
       <a href="/" class="main-page"><img src="{{url_for('static',filename='img/zombie-icon-transparent.png')}}"></a>
       <nav>
         <ul>
@@ -15,7 +20,6 @@
           <li><a href="gallery">Gallery</a></li>
           <li><a href="contact">Contact</a></li>
           <li><a href="about">About Us</a></li>
-          <li><a href="community">Community</a></li>
           <li><a href="highestscores">Highest scores</a></li>
         </ul>
       </nav>

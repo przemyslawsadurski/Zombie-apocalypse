@@ -8,6 +8,11 @@
         <link rel="icon" href="{{ url_for('static', filename='img/zombie_icon.png') }}" type="image/png">
     </head>
     <body>
+        {% if g.user %}
+        <p class="logged-user">Welcome, {{ g.user }}!</p>
+        <a href="logout"><input type="button" id="logout-button" name="logout-button" value="Logout"></a>
+        <a href="account"><input type="button" id="user-profile" name="user-profile" value="Account"></a>
+        {% endif %}
         <a href="/" class="main-page"><img src="{{url_for('static',filename='img/zombie-icon-transparent.png')}}"></a>
         <nav>
           <ul>
@@ -15,7 +20,6 @@
             <li><a href="gallery">Gallery</a></li>
             <li><a href="contact">Contact</a></li>
             <li><a href="about">About Us</a></li>
-            <li><a href="community">Community</a></li>
             <li><a href="highestscores">Highest scores</a></li>
           </ul>
         </nav>
@@ -27,7 +31,7 @@
             <p>In order to play the game, at first you need to register using the form below. <br> Remember, after you successfully register, never share your account credentials with anyone.<br></p> 
             <p>If you already have an account, you can download the game by clicking this <a href="download">link.</a></p>
                 <div class="registration-form">
-                    <form method="POST" action="try-register" class="register-form">
+                    <form method="POST" action="register" class="register-form">
                         <label for="username">Username:</label><br>
                         <input type="text" id="username" name="username" required><br></br>
 

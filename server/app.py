@@ -1,9 +1,7 @@
 #importowanie niezbędnych bibliotek
-from flask import Flask,render_template, request, jsonify, Blueprint, redirect, session
-from flask_mysqldb import MySQL
+from flask import Flask,render_template, request, jsonify, Blueprint, redirect, session, g, url_for, flash
 from flask_mail import Mail
 from flask_mail import Message
-from mysql.connector import connect, Error
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -16,23 +14,23 @@ import operator
 import numpy as np
 import os
 import bcrypt
+import sqlite3
+import secrets
 
 
 #przypisanie nazwy aplikacji oraz folderów
 app = Flask(__name__, static_folder='static', static_url_path='/static')
+    
 #automatyczne debugowanie - nie ma potrzeby restartować flaska po każdej zmianie kodu
 if __name__ == '__app__':
     app.run(debug=True)
 
+
 #ustawienia bazy danych
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'vr'
-mysql = MySQL(app)
+DATABASE = '..\db\zombie-apocalypse.db'
 
 #obsługa wysyłania emailów do użytkowników
-app.secret_key = "sekretny-klucz"
+app.secret_key = "f09da1a4f9569ae3f19c9710c57999ea"
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USERNAME'] = 'PrzemSad99@gmail.com'
@@ -42,15 +40,67 @@ app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
 
 
+
+@app.before_request
+def before_request():
+    g.user = None
+    if 'username' in session:
+        g.user = session['username']
+
 #strona główna
 @app.route("/")
 def index():
-    session.clear()
     return render_template('index.html')
 
-@app.route("/register")
+@app.route("/register", methods=['GET','POST'])
 def zarejestruj_uzytkownika():
+    if request.method == 'POST':
+        email = request.form['email']
+        username = request.form['username']
+        password = request.form['password']
+        confirm = request.form['confirm-password']
+        db = sqlite3.connect(DATABASE)
+        cursor = db.cursor()
+        cursor.execute('SELECT * FROM user WHERE user_username = ?', (username,))
+        if cursor.fetchone():   
+            flash('Username already exists')
+            return redirect(url_for('register'))
+        elif password != confirm:
+            flash('''Given passwords don't match''')
+            return redirect(url_for('register'))
+
+        haslo_hash = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
+        cursor.execute('INSERT INTO user (user_email, user_username, user_pass_hash,user_premium_points,user_coins,user_topscore) VALUES (?, ?, ?,0,100,0)', (email,username, haslo_hash))
+        db.commit()
+        db.close()
+        flash('User registered successfully')
+        session['username'] = username
+        return redirect(url_for('index'))
     return render_template('register.html')
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        db = sqlite3.connect(DATABASE)
+        cursor = db.cursor()
+        cursor.execute('SELECT * FROM user WHERE user_username = ?', (username,))
+        if cursor.fetchone():
+            cursor.execute('SELECT user_pass_hash FROM user WHERE user_username = ?', (username,))
+            query_output = cursor.fetchone()
+            if query_output and check_password_hash(query_output[0],password):
+                session['username'] = username
+                print("username: ",session['username'])
+                db.close()
+                return redirect(url_for('index'))
+            else:
+                flash("Incorrect password")
+                db.close()
+                return redirect(url_for('login'))
+        db.commit()
+        db.close()
+    return render_template('login.html')
 
 @app.route("/gallery")
 def gallery():
@@ -62,7 +112,12 @@ def contact():
 
 @app.route("/highestscores")
 def highestscores():
-    return render_template('highestscores.html')
+    db = sqlite3.connect(DATABASE)
+    cursor = db.cursor()
+    cursor.execute('SELECT user_username, user_topscore FROM user ORDER BY user_topscore DESC LIMIT 10')
+    highestscores = cursor.fetchall()
+    db.close()
+    return render_template('highestscores.html', scores=highestscores )
 
 @app.route("/community")
 def community():
@@ -72,74 +127,23 @@ def community():
 def about():
     return render_template('about.html')
 
+@app.route("/account")
+def account():
+    g.user = session['username']
+    db = sqlite3.connect(DATABASE)
+    cursor = db.cursor()
+    cursor.execute("SELECT user_premium_points, user_coins, user_topscore from user WHERE user_username = ?", (g.user,) )
+    acc_info = cursor.fetchall()
+    premium_points, user_coins, user_topscore = acc_info[0]
+    return render_template('account.html', premium_points = premium_points, user_coins=user_coins, user_topscore=user_topscore)
 
 @app.route("/static/css/style.css")
 def style():
     return app.send_static_file("css/style.css")
 
-@app.route("/zarejestruj", methods=['POST'])
-def zarejestruj():
-    #status_rej = 'default'
-    mail = request.form['mail']
-    haslo = request.form['haslo']
-    cursor = mysql.connection.cursor()
-    cursor.execute("SELECT COUNT(*) from uzytkownik WHERE email=%s", (mail,))
-    wynik_query = cursor.fetchone()
-    wynik = int(wynik_query[0])
-    if (wynik>0):
-        print("uzytkownik istnieje")
-        status_rej = 'error'
-    else:
-        haslo_hash = bcrypt.hashpw(haslo.encode("utf-8"), bcrypt.gensalt())
-        cursor.execute("INSERT INTO uzytkownik(id_uzytkownik,email,hasło) VALUES(default,%s,%s)", 
-                       (mail,haslo_hash))
-        mysql.connection.commit()
-        cursor.close()
-        status_rej = 'success'
-    session['status_rej'] = status_rej
-    return redirect("/rejestracja")
-    
-@app.route("/login", methods=['GET','POST'])
-def login():
-    if request.method == 'POST':
-        identyfikator = request.form['mail']
-        haslo = request.form['haslo']
-        cursor = mysql.connection.cursor()
-        cursor.execute("SELECT hasło from uzytkownik WHERE email=%s", (identyfikator,))
-        wynik = cursor.fetchone()
-        # Sprawdź czy podane dane są zgodne
-        if wynik and check_password_hash(wynik[0],haslo):
-            session['username'] = identyfikator
-            return render_template('uzytkownik_zmiana.html')
-        else:
-            return 'Invalid credentials'
-    else:
-        return render_template('login.html')
-
-@app.route("/unity_logowanie", methods=["POST", "GET"])
-def unity_logowanie():
-    email = request.form.get("email")
-    haslo = request.form.get("haslo")
-    cursor = mysql.connection.cursor()
-    cursor.execute("SELECT hasło from uzytkownik WHERE email=%s", (email,))
-    wynik = cursor.fetchone()
-    print(wynik)
-    if wynik and check_password_hash(wynik[0],haslo):
-        return "Sukces!"
-    else:
-        return "Blad!"
-
 @app.route("/logout")
 def logout():
     session.pop('username', None)
-    return redirect('/login')
+    return redirect(url_for('login'))
 
-@app.route("/dodaj_email", methods=["POST"])
-def dodaj_email():
-    email = request.form["email"]
-    haslo = request.form["haslo"]
-    cursor = mysql.connection.cursor()
-    cursor.execute(f"INSERT INTO uzytkownik(id_uzytkownik,email,hasło,opis) VALUES (default,'{email}','{haslo}')")
-    mysql.connection.commit()
-    cursor.close()
-    return "Dodano email"
+
