@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8" />
 	      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Zombie - Apocalypse</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
         <link rel="icon" href="{{ url_for('static', filename='img/zombie_icon.png') }}" type="image/png">
@@ -28,9 +29,9 @@
       <a href="login"><input type="button" id="login-button" name="login-button" action="login" value="LOG IN"></a>
         <div class="container">
           <div class="content">
-            <span class="premium-points">Premium points: {{ premium_points }}</span>
-            <span class="coins">Coins: {{ user_coins  }}</span>
-            <span class="topscore">Best score: {{ user_topscore }}</span>
+            <span class="premium-points">{{ premium_points }} <img id="premium-points-image" src="{{url_for('static',filename='img/premium.png')}}" alt="Premium points" title="Premium points"></span>
+            <span class="coins">{{ user_coins  }} <img id="coins-image" src="{{url_for('static',filename='img/coins.png')}}" alt="Coins" title="Coins"></span>
+            <span class="topscore">{{ user_topscore }} <img id="topscore-image" src="{{url_for('static',filename='img/gun-pointer.png')}}" alt="Top Score" title="Top score"></span>
             <div class="account-menu">
               <table class="account-menu-table">
                 <thead>

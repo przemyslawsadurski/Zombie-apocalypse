@@ -278,9 +278,9 @@ Account
 ============================================================================================================*/
 
 .premium-points, .coins, .topscore {
-  font-size: 24px;
   color: black;
-  
+  font-size: 30px;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 .premium-points {
@@ -304,15 +304,22 @@ Account
 .interface {
   border: 1px solid black;
   padding: 10px;
-  margin-top: 10px;
+  margin-top: -20px;
+  margin-bottom: 0px;
+}
+
+.account-menu {
+  height: 100%;
 }
 
 .account-menu-table {
   border-collapse: collapse;
+  height: 10px;
   width: 100%;
   font-size: 18px;
   color: #333;
   margin-bottom: 400px;
+  margin-top: 60px;
 }
 
 .account-menu-table th,
@@ -333,7 +340,7 @@ td {
   background-color: #817b7b;
 }
 
-.account-menu-table tr:hover {
+.account-menu-table td:hover {
   background-color: #ddd;
 }
 
@@ -341,3 +348,13 @@ td {
   background-color: #333;
   color: white;
 }
+
+#account-settings-interface,
+#game-settings-interface,
+#premium-purchase-interface,
+#recruit-friend-interface {
+  position: absolute;
+  margin-bottom: 400px;
+}
+
+
