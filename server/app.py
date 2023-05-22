@@ -53,7 +53,7 @@ def index():
     return render_template('index.html')
 
 @app.route("/register", methods=['GET','POST'])
-def zarejestruj_uzytkownika():
+def register():
     if request.method == 'POST':
         email = request.form['email']
         username = request.form['username']
@@ -64,11 +64,17 @@ def zarejestruj_uzytkownika():
         cursor.execute('SELECT * FROM user WHERE user_username = ?', (username,))
         if cursor.fetchone():   
             flash('Username already exists')
+            print("Username already exists")
+            return redirect(url_for('register'))
+        cursor.execute('SELECT * FROM user WHERE user_email = ?', (email,))
+        if cursor.fetchone():
+            flash("E-mail is already in use, please type in different e-mail address")
+            print("E-mail already exists")
             return redirect(url_for('register'))
         elif password != confirm:
             flash('''Given passwords don't match''')
+            print("Passwords don't match")
             return redirect(url_for('register'))
-
         haslo_hash = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
         cursor.execute('INSERT INTO user (user_email, user_username, user_pass_hash,user_premium_points,user_coins,user_topscore) VALUES (?, ?, ?,0,100,0)', (email,username, haslo_hash))
         db.commit()
